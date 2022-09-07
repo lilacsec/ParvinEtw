@@ -1,0 +1,49 @@
+{
+    "providers": [
+        {
+            "name": "kernel-process",
+            "any": "0x10",
+            // any of these filters
+            // property_equals | property_exists | property_contains | property_icontains
+            // property_startswith | property_istartswith | property_endswith | property_iendswith
+            "detections": [],
+            "logFilters": [],
+            "filters": [
+                {
+                    "type": "property_is",
+                    "property": "ImageName",
+                    "value": ["notepad.exe", "cmd.exe"]
+                },
+                {
+                    "type": "event_id_is",
+                    "value": [2, 1]
+                },
+                [
+                    {
+                        "type": "property_icontains",
+                        "property": "CommandLine",
+                        "value": ["/s"]
+                    },
+                    {
+                        "type": "property_icontains",
+                        "property": "CommandLine",
+                        "value": ["/d"]
+                    }
+                ]
+            ]
+        }
+    ],
+    "detections": [
+        {
+            "name": "psexec",
+            "severity": 4,
+            "type": "simple|sequence",
+            "query": {
+                "providerName": "process",
+                "where": {
+                    //...
+                }
+            }
+        }
+    ]
+}
